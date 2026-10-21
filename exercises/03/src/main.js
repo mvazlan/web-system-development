@@ -17,7 +17,7 @@ const calculateTotal = () =>
 const renderExpenses = () => {
   expenseList.innerHTML = ''
 
-  expenses.forEach(expense => {
+  expenses.forEach((expense, index) => {
     const item = document.createElement('li')
     item.classList.add('expense-item')
 
@@ -29,13 +29,25 @@ const renderExpenses = () => {
     amount.classList.add('expense-value')
     amount.textContent = formatCurrency(expense.amount)
 
-    item.append(name, amount)
+    const removeButton = document.createElement('button')
+    removeButton.classList.add('remove-button')
+    removeButton.type = 'button'
+    removeButton.textContent = 'Remove'
+    removeButton.setAttribute('aria-label', `Remove ${expense.name}`)
+    removeButton.addEventListener('click', () => removeExpense(index))
+
+    item.append(name, amount, removeButton)
     expenseList.appendChild(item)
   })
 
   totalElement.textContent = formatCurrency(calculateTotal())
   countElement.textContent = `${expenses.length} ${expenses.length === 1 ? 'item' : 'items'}`
   emptyState.hidden = expenses.length > 0
+}
+
+const removeExpense = index => {
+  expenses.splice(index, 1)
+  renderExpenses()
 }
 
 const validateExpense = (name, amount) => {
