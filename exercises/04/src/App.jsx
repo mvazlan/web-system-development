@@ -1,47 +1,41 @@
-import { useState } from 'react'
+import { createBrowserRouter, RouterProvider, Link, Outlet } from 'react-router-dom'
+import Catalog from './pages/Catalog.jsx'
+import ProductDetail from './pages/ProductDetail.jsx'
+import Cart from './pages/Cart.jsx'
 
-const products = [
-  { name: 'T-shirt', price: 15 },
-  { name: 'Backpack', price: 30 },
-  { name: 'Cap', price: 10 },
-]
-
-function App() {
-  const [cart, setCart] = useState([])
-
-  const addToCart = (product) => {
-    setCart(cart.concat(product))
-  }
-
+function Layout() {
   return (
-    <main className="container">
-      <h1>Shopping Cart</h1>
-
-      <section>
-        <h2>Products</h2>
-        <div className="products">
-          {products.map((product, index) => (
-            <article className="product" key={product.name}>
-              <h3>{product.name}</h3>
-              <p>€{product.price.toFixed(2)}</p>
-              <button
-                data-testid={`add-${index}`}
-                onClick={() => addToCart(product)}
-              >
-                Add to cart
-              </button>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2>Cart</h2>
-        <p>Marcos: complete the cart list, remove buttons and total here.</p>
-        <p>Items in cart: {cart.length}</p>
-      </section>
-    </main>
+    <>
+      {/* Marcos ampliará este header con el contador de unidades del carrito. */}
+      <header className="site-header">
+        <strong>Mini Shop</strong>
+        <nav>
+          <Link to="/" data-testid="nav-home">Home</Link>
+          <Link to="/cart" data-testid="nav-cart">Cart</Link>
+        </nav>
+      </header>
+      <main className="container"><Outlet /></main>
+    </>
   )
 }
 
-export default App
+function NotFound() {
+  return <p data-testid="not-found">Page not found.</p>
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Catalog /> },
+      { path: 'products/:id', element: <ProductDetail /> },
+      { path: 'cart', element: <Cart /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+])
+
+export default function App() {
+  return <RouterProvider router={router} />
+}
