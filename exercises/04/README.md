@@ -1,16 +1,32 @@
-# React + Vite
+# Module 04 – React Mini Shop (entrega por parejas)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Enunciado
+Ejercicio React Mini Shop del módulo 04. Aplicación React SPA con rutas `/`, `/products/:id` y `/cart`, catálogo local y carrito compartido con Context API.
 
-Currently, two official plugins are available:
+## Ejecutar
+Desde `exercises/04`:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Abrir la URL indicada por Vite. No usar Live Server ni abrir `index.html` directamente.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Estado actual: primer commit (Manuel)
+- Proyecto React + Vite con `@vitejs/plugin-react` (JSX automático).
+- React Router con rutas `/`, `/products/:id`, `/cart` y error 404.
+- Layout compartido con navegación básica.
+- Productos locales en `src/data/products.js`.
+- Catálogo con búsqueda controlada y `data-testid` exactos.
+- Página de detalle usando `useParams`, con enlace de vuelta y botón de añadir.
+- Estado básico compartido con CartContext, que permite añadir productos y aumentar cantidades.
 
-## Expanding the ESLint configuration
+## Pendiente para Marcos (segundo commit)
+- Completar el header con `data-testid="cart-count"` usando `useCart`.
+- Completar `CartContext.jsx` con `removeFromCart`, `updateQuantity`, `clearCart` y exponerlas en el Provider.
+- Sustituir la página `Cart.jsx`: filas, cantidades, aumentar/disminuir, eliminar, precio total, estado vacío y checkout con nombre controlado.
+- Respetar los `data-testid` exactos de las capturas del enunciado.
+- Probar el flujo completo de compra, búsqueda, enlace directo al detalle, rutas 404 y navegación sin recarga.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Importante**: Esta base es intencionadamente una primera parte funcional, NO la entrega final completa.
