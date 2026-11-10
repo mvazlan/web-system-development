@@ -20,9 +20,27 @@ export function CartProvider({ children }) {
     }
   }
 
-  // Marcos completará aquí removeFromCart, updateQuantity y clearCart.
+  function removeFromCart(id) {
+    setCartItems(items => items.filter(item => item.id !== id))
+  }
+
+  // Si la cantidad llega a 0, el producto se elimina del carrito.
+  function updateQuantity(id, quantity) {
+    if (quantity <= 0) {
+      removeFromCart(id)
+      return
+    }
+    setCartItems(items => items.map(item =>
+      item.id === id ? { ...item, quantity } : item
+    ))
+  }
+
+  function clearCart() {
+    setCartItems([])
+  }
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   )
