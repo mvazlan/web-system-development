@@ -1,0 +1,18 @@
+{
+  "name": "module-05-books-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Module 05 - REST API for books with Express",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

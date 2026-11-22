@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3000
+
+### Welcome page (static HTML)
+GET {{baseUrl}}/
+
+### List all books (200)
+GET {{baseUrl}}/books
+
+### Find existing book (200)
+GET {{baseUrl}}/books/1
+
+### Find missing book (404 with JSON)
+GET {{baseUrl}}/books/999999
+
+# Marcos will add POST, DELETE and unknown-endpoint requests.
