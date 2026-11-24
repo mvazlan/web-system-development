@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getBooks, getBookById } from '../controllers/bookController.js'
+import { getBooks, getBookById, createBook, deleteBook } from '../controllers/bookController.js'
 
 const bookRouter = Router()
 
@@ -7,6 +7,8 @@ const bookRouter = Router()
 bookRouter.get('/', getBooks)
 bookRouter.get('/:id', getBookById)
 
-// TODO (Marcos): add POST / and DELETE /:id with your controller functions.
+// Marcos: write operations.
+bookRouter.post('/', createBook)
+bookRouter.delete('/:id', deleteBook)
 
 export default bookRouter

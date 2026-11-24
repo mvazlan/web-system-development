@@ -1,0 +1,73 @@
+@baseUrl = http://localhost:3000
+
+### Welcome page (200, static HTML)
+GET {{baseUrl}}/
+
+### List all books (200, JSON array)
+GET {{baseUrl}}/books
+
+### Find existing book (200, JSON book)
+GET {{baseUrl}}/books/1
+
+### Find missing book (404, JSON error)
+GET {{baseUrl}}/books/999999
+
+### Create a valid book (201, server-generated id)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "Test Book",
+  "author": "Test Author"
+}
+
+### Create without title (400)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "author": "Test Author"
+}
+
+### Create without author (400)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "Test Book"
+}
+
+### Create with blank title and author (400)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "   ",
+  "author": "   "
+}
+
+### Create sending an id: the server ignores it and generates its own (201)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "id": "1",
+  "title": "Client Id Book",
+  "author": "Someone",
+  "extra": "ignored"
+}
+
+### Create with malformed JSON (400, JSON error)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{ "title": "Broken", }
+
+### Delete existing book (204, empty body)
+DELETE {{baseUrl}}/books/1
+
+### Delete missing book (404, JSON error)
+DELETE {{baseUrl}}/books/999999
+
+### Unknown route (404, unknown endpoint)
+GET {{baseUrl}}/ruta-no-existente

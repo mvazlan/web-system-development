@@ -13,8 +13,25 @@ function getBookById(id) {
   return books.find(book => book.id === id)
 }
 
-// TODO (Marcos): add createBook and deleteBook here.
-// The server must generate IDs. Never trust an ID supplied by the client.
-// Do not reuse IDs already generated during the running process.
+// Marcos: write operations.
+// The counter starts at the highest starter ID and only ever grows,
+// so new IDs never collide with existing ones and are never reused.
+let lastId = Math.max(0, ...books.map(book => Number(book.id)))
 
-export default { getBooks, getBookById }
+function createBook({ title, author }) {
+  lastId += 1
+  const book = { id: String(lastId), title, author }
+  books = books.concat(book)
+  return book
+}
+
+function deleteBook(id) {
+  const exists = books.some(book => book.id === id)
+  if (!exists) {
+    return false
+  }
+  books = books.filter(book => book.id !== id)
+  return true
+}
+
+export default { getBooks, getBookById, createBook, deleteBook }

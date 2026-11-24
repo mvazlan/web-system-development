@@ -1,6 +1,15 @@
-# Exercise 05 - Books REST API (Manuel's base)
+# Exercise 05 - Books REST API
 
-This is **the first contribution**, ready for Marcos to complete. The **final assignment is not finished yet**.
+Simple REST API with Express to manage a list of books `{ id, title, author }`. The assignment is **complete**: Manuel built the base and the read operations, and Marcos added the write operations, middlewares and tests.
+
+| Endpoint | Success | Error |
+|---|---|---|
+| `GET /books` | 200 + JSON array | — |
+| `POST /books` | 201 + created book | 400 if `title` or `author` is missing/blank |
+| `GET /books/:id` | 200 + book | 404 if it does not exist |
+| `DELETE /books/:id` | 204, empty body | 404 if it does not exist |
+
+Any other route returns 404 `{ "error": "unknown endpoint" }`. Errors are always JSON `{ "error": "..." }`.
 
 ## Manuel's contribution
 
@@ -26,18 +35,27 @@ Open `http://localhost:3000` and `http://localhost:3000/books`.
 
 `npm install` will also generate `package-lock.json` if it is missing; commit that file.
 
-## Remaining work: Marcos
+## Marcos's contribution
 
-Complete these requirements without rebuilding the project:
+- `db.js`: `createBook({ title, author })` generates the ID on the server with a counter that starts at the highest starter ID, so IDs never collide and are never reused; `deleteBook(id)` removes only that book with `filter` and returns `true`/`false`.
+- `controllers/bookController.js`: `createBook` requires `title` and `author` as non-blank strings (400 otherwise), ignores any `id` or extra fields from the client and answers 201; `deleteBook` answers 204 with `.end()` or 404 JSON.
+- `routes/bookRoutes.js`: `POST /` and `DELETE /:id`.
+- `middlewares/errorMiddleware.js`: `unknownEndpoint` (404 `unknown endpoint`) and `errorHandler` (400 `invalid JSON` for malformed bodies, 500 `internal server error` otherwise).
+- `app.js`: both middlewares registered after the book router, in this order: `express.json()` → `express.static()` → `/books` → `unknownEndpoint` → `errorHandler`.
+- `requests/books.http`: REST Client requests for every endpoint and error case.
+- `tests/books.test.js`: automatic tests with `node:test` and `fetch`.
 
-1. `POST /books`: require nonblank string `title` and `author`, status 400 with JSON error if invalid; otherwise create a book with a **server-generated ID**, status 201 with its JSON.
-2. `DELETE /books/:id`: remove the book, status 204 with **no response body**; for a missing ID, status 404 and JSON error.
-3. Add a custom middleware for **unknown routes**: 404 with `{ "error": "unknown endpoint" }`; register it after the book router.
-4. Return JSON errors for malformed JSON bodies, preferably with a dedicated error-handler middleware.
-5. Provide HTTP request examples and automatic tests that cover all four endpoints, status codes, empty/invalid fields, unknown routes, and static HTML.
-6. Update this README to document the **completed** assignment and how to run/test it.
+Data is stored **in memory** (no database): every change is lost when Node.js restarts.
 
-Note: the exercise asks for **in-memory** data, not a database; all changes are lost on restart. This base starts with two books to demonstrate GET /books/:id; new IDs must not collide with them. The book shape must remain exactly `{ id, title, author }`.
+## Test
+
+Manual: with `npm run dev` running, open `requests/books.http` in VS Code (REST Client extension) and click **Send Request** on each block.
+
+Automatic (the server does not need to be running; the tests open a random port):
+
+```bash
+npm test
+```
 
 ### Suggested Git workflow
 
